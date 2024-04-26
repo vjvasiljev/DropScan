@@ -17,6 +17,11 @@ import OrderTable from './components/OrderTable';
 import OrderList from './components/OrderList';
 import Header from './components/Header';
 import WalletInfo from './components/WalletInfo'
+import LinearProgress from "@mui/joy/LinearProgress";
+
+
+
+
 
 export default function JoyOrderDashboardTemplate() {
   return (
@@ -96,6 +101,22 @@ export default function JoyOrderDashboardTemplate() {
             </Button>
           </Box>
           <Typography level="h3">Adress: 0x... </Typography>
+          <Typography level="h3">Total score: .... </Typography>
+          <LinearProgress
+        determinate
+        // variant="outlined"
+        color="success"
+        size="sm"
+        thickness={32}
+        value={92}
+        sx={{
+          "--LinearProgress-radius": "0px",
+          "--LinearProgress-progressThickness": "24px",
+          boxShadow: "sm",
+          borderColor: "danger.500",
+        }}
+      ></LinearProgress>
+          
           <WalletInfo />
           {/* <OrderTable /> */}
           {/* <OrderList /> */}

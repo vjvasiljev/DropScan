@@ -6,6 +6,7 @@ import Button from "@mui/joy/Button";
 import InfoTooltip from "./InfoTooltip";
 
 import ToDoStatus from "./ToDoStatus";
+import LinearProgress from "@mui/joy/LinearProgress";
 
 export default function BasicTable() {
   return (
@@ -43,6 +44,27 @@ export default function BasicTable() {
           </tr>
         </tbody>
       </Table>
+      <LinearProgress
+        determinate
+        // variant="outlined"
+        color="danger"
+        size="sm"
+        thickness={32}
+        value={50}
+        sx={{
+          "--LinearProgress-radius": "0px",
+          "--LinearProgress-progressThickness": "24px",
+          boxShadow: "sm",
+          borderColor: "danger.500",
+        }}
+      ></LinearProgress>
+      <Typography
+        // level="body-lg"
+        textColor="white"
+        sx={{ mixBlendMode: "difference" }}
+      >
+        Top {`${Math.round(50)}%`} of all adresses
+      </Typography>
       <br></br>
 
       <Table aria-label="basic table" variant="outlined">
