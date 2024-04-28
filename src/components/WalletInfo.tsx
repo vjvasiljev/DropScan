@@ -7,10 +7,14 @@ import InfoTooltip from "./InfoTooltip";
 
 import ToDoStatus from "./ToDoStatus";
 import LinearProgress from "@mui/joy/LinearProgress";
+import CardInvertedColors from "./CardInvertedColors";
+import BasicGrid from "./BasicGrid";
 
 export default function BasicTable() {
   return (
     <>
+      <BasicGrid/>
+      <CardInvertedColors />
       <Table aria-label="basic table" variant="outlined">
         <thead>
           <tr>

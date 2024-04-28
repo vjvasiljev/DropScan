@@ -20,6 +20,7 @@
     "i18next": "^23.11.2",
     "react": "latest",
     "react-dom": "latest",
+    "react-multi-carousel": "^2.8.5",
     "viem": "^2.9.28",
     "wagmi": "^2.6.0"
   },

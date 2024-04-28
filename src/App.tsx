@@ -19,6 +19,8 @@ import Header from './components/Header';
 import WalletInfo from './components/WalletInfo'
 import LinearProgress from "@mui/joy/LinearProgress";
 
+import DottedConnector from './components/DottedConnector';
+
 
 
 import { createWeb3Modal } from '@web3modal/wagmi/react'
@@ -165,7 +167,8 @@ export default function JoyOrderDashboardTemplate() {
           boxShadow: "sm",
           borderColor: "danger.500",
         }}
-      ></LinearProgress>
+          ></LinearProgress>
+          <DottedConnector />
           
           <WalletInfo />
           {/* <OrderTable /> */}
