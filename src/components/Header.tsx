@@ -27,12 +27,21 @@ import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import ParaglidingIcon from "@mui/icons-material/Paragliding";
 
-import Navigation from "./Navigation";
+import {
+  createWeb3Modal,
+  useWeb3Modal,
+  useWeb3ModalEvents,
+  useWeb3ModalState,
+  useWeb3ModalTheme,
+  useWalletInfo,
+} from "@web3modal/wagmi/react";
 
 function ColorSchemeToggle() {
   const { mode, setMode } = useColorScheme();
   const [mounted, setMounted] = React.useState(false);
+  const { themeMode, themeVariables, setThemeMode } = useWeb3ModalTheme();
   React.useEffect(() => {
     setMounted(true);
   }, []);
@@ -49,8 +58,10 @@ function ColorSchemeToggle() {
         sx={{ alignSelf: "center" }}
         onClick={() => {
           if (mode === "light") {
+            setThemeMode("dark");
             setMode("dark");
           } else {
+            setThemeMode("light");
             setMode("light");
           }
         }}
@@ -63,6 +74,7 @@ function ColorSchemeToggle() {
 
 export default function Header() {
   const [open, setOpen] = React.useState(false);
+
   return (
     <Box
       sx={{
@@ -93,18 +105,15 @@ export default function Header() {
         spacing={1}
         sx={{ display: { xs: "none", sm: "flex" } }}
       >
-        <IconButton
-          size="md"
-          variant="outlined"
-          color="neutral"
-          sx={{
-            display: { xs: "none", sm: "inline-flex" },
-            borderRadius: "50%",
-          }}
-        >
-          <LanguageRoundedIcon />
-        </IconButton>
-        <Button
+        <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+          <IconButton variant="soft" color="primary" size="sm">
+            <ParaglidingIcon />
+          </IconButton>
+          <Typography level="title-lg">Drop Scan</Typography>
+          {/* <ColorSchemeToggle sx={{ ml: "auto" }} /> */}
+        </Box>
+
+        {/* <Button
           variant="plain"
           color="neutral"
           aria-pressed="true"
@@ -134,7 +143,7 @@ export default function Header() {
           sx={{ alignSelf: "center" }}
         >
           Files
-        </Button>
+        </Button> */}
       </Stack>
       <Box sx={{ display: { xs: "inline-flex", sm: "none" } }}>
         <IconButton
@@ -151,9 +160,7 @@ export default function Header() {
         >
           <ModalClose />
           <DialogTitle>Acme Co.</DialogTitle>
-          <Box sx={{ px: 1 }}>
-            <Navigation />
-          </Box>
+          <Box sx={{ px: 1 }}>{/* <Navigation /> */}</Box>
         </Drawer>
       </Box>
 
@@ -165,7 +172,7 @@ export default function Header() {
           alignItems: "center",
         }}
       >
-        <Input
+        {/* <Input
           size="sm"
           variant="outlined"
           placeholder="Search anything…"
@@ -199,8 +206,8 @@ export default function Header() {
           }}
         >
           <SearchRoundedIcon />
-        </IconButton>
-        <Tooltip title="Joy UI overview" variant="outlined">
+        </IconButton> */}
+        {/* <Tooltip title="Joy UI overview" variant="outlined">
           <IconButton
             size="sm"
             variant="plain"
@@ -211,9 +218,21 @@ export default function Header() {
           >
             <BookRoundedIcon />
           </IconButton>
-        </Tooltip>
+        </Tooltip> */}
+        <IconButton
+          size="md"
+          color="neutral"
+          // sx={{
+          //   display: { xs: "none", sm: "inline-flex" },
+          //   borderRadius: "50%",
+          // }}
+        >
+          {/* <LanguageRoundedIcon /> */}
+        </IconButton>
         <ColorSchemeToggle />
-        <Dropdown>
+
+        <w3m-button />
+        {/* <Dropdown>
           <MenuButton
             variant="plain"
             size="sm"
@@ -288,7 +307,7 @@ export default function Header() {
               Log out
             </MenuItem>
           </Menu>
-        </Dropdown>
+        </Dropdown> */}
       </Box>
     </Box>
   );
