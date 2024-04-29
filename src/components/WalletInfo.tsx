@@ -14,7 +14,7 @@ export default function BasicTable() {
   return (
     <>
       <BasicGrid/>
-      <CardInvertedColors />
+      
       <Table aria-label="basic table" variant="outlined">
         <thead>
           <tr>

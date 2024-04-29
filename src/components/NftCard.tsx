@@ -9,6 +9,7 @@ import BookmarkAdd from '@mui/icons-material/BookmarkAddOutlined';
 
 export default function NftCard() {
     return (
+      // TODO MAKE THE CARD CLICK A MINT, WHOLE CARD CLICK, NOW YOU CAN MOVE IMAGE
       
     <Card  variant='soft' color="danger">
       <div>
