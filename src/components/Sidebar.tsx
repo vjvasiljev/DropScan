@@ -27,7 +27,7 @@ import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded';
+import ParaglidingIcon from '@mui/icons-material/Paragliding';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import ColorSchemeToggle from './ColorSchemeToggle';
@@ -120,12 +120,12 @@ export default function Sidebar() {
       />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
         <IconButton variant="soft" color="primary" size="sm">
-          <BrightnessAutoRoundedIcon />
+          <ParaglidingIcon />
         </IconButton>
-        <Typography level="title-lg">Acme Co.</Typography>
+        <Typography level="title-lg">Drop Scan</Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
       </Box>
-      <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" />
+      {/* <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" /> */}
       <Box
         sx={{
           minHeight: 0,
@@ -168,18 +168,27 @@ export default function Sidebar() {
             <ListItemButton selected>
               <ShoppingCartRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Orders</Typography>
+                <Typography level="title-sm">Scroll Airdrop</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
 
-          <ListItem nested>
+          <ListItem>
+            <ListItemButton>
+              <DashboardRoundedIcon />
+              <ListItemContent>
+                <Typography level="title-sm">Batch Adress Check</Typography>
+              </ListItemContent>
+            </ListItemButton>
+          </ListItem>
+
+          {/* <ListItem nested>
             <Toggler
               renderToggle={({ open, setOpen }) => (
                 <ListItemButton onClick={() => setOpen(!open)}>
                   <AssignmentRoundedIcon />
-                  <ListItemContent>
-                    <Typography level="title-sm">Tasks</Typography>
+                  <ListItemContent >
+                    <Typography level="title-sm">Daily Tasks</Typography>
                   </ListItemContent>
                   <KeyboardArrowDownIcon
                     sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
@@ -276,9 +285,9 @@ export default function Sidebar() {
               <SettingsRoundedIcon />
               Settings
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
         </List>
-        <Card
+        {/* <Card
           invertedColors
           variant="soft"
           color="warning"
@@ -298,9 +307,9 @@ export default function Sidebar() {
           <Button size="sm" variant="solid">
             Upgrade plan
           </Button>
-        </Card>
+        </Card> */}
       </Box>
-      <Divider />
+      {/* <Divider />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
         <Avatar
           variant="outlined"
@@ -314,7 +323,7 @@ export default function Sidebar() {
         <IconButton size="sm" variant="plain" color="neutral">
           <LogoutRoundedIcon />
         </IconButton>
-      </Box>
+      </Box> */}
     </Sheet>
   );
 }

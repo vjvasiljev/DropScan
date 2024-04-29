@@ -10,7 +10,7 @@ import BookmarkAdd from '@mui/icons-material/BookmarkAddOutlined';
 export default function NftCard() {
     return (
       
-    <Card sx={{ width: 240 }} variant='soft' color="danger">
+    <Card  variant='soft' color="danger">
       <div>
         <Typography level="title-sm">Top 50%</Typography>
        
