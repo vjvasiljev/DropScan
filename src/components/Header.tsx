@@ -28,6 +28,9 @@ import OpenInNewRoundedIcon from "@mui/icons-material/OpenInNewRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import ParaglidingIcon from "@mui/icons-material/Paragliding";
+import EvStationIcon from "@mui/icons-material/EvStation";
+
+import Badge from "@mui/joy/Badge";
 
 import {
   createWeb3Modal,
@@ -84,9 +87,7 @@ export default function Header() {
         p: 2,
         gap: 2,
         bgcolor: "background.surface",
-        display: "flex",
         flexDirection: "row",
-        justifyContent: "space-between",
         alignItems: "center",
         gridColumn: "1 / -1",
         borderBottom: "1px solid",
@@ -219,7 +220,19 @@ export default function Header() {
             <BookRoundedIcon />
           </IconButton>
         </Tooltip> */}
-        <IconButton
+        <Badge badgeContent={156} max={99999} showZero>
+          <IconButton
+            size="md"
+            color="neutral"
+            // sx={{
+            //   display: { xs: "none", sm: "inline-flex" },
+            //   borderRadius: "50%",
+            // }}
+          >
+            <EvStationIcon />
+          </IconButton>
+        </Badge>
+        {/* <IconButton
           size="md"
           color="neutral"
           // sx={{
@@ -227,8 +240,8 @@ export default function Header() {
           //   borderRadius: "50%",
           // }}
         >
-          {/* <LanguageRoundedIcon /> */}
-        </IconButton>
+          <LanguageRoundedIcon />
+        </IconButton> */}
         <ColorSchemeToggle />
 
         <w3m-button />

@@ -13,19 +13,25 @@ import Box from "@mui/material/Box";
 import DottedConnector from "./DottedConnector";
 import { useState, useEffect } from "react";
 
-export default function CardInvertedColors() {
-  const [percentageLevel, setPercentageLevel] = useState(0);
-  useEffect(() => {
-    setPercentageLevel(16);
-  }, []);
+const defaultValue = "Loading...";
 
+export default function CardInvertedColors({
+  title = defaultValue,
+  valueMain = defaultValue,
+  valueSecondary = defaultValue,
+  percentageLevel = -1,
+  requirmentsLevel = defaultValue,
+}) {
   return (
     <Card variant="soft" color="success" invertedColors>
       <CardContent orientation="horizontal">
         <CardContent sx={{ textAlign: "left" }}>
-          <Typography level="body-md">Current Balance</Typography>
+          <Typography level="body-md">{title}</Typography>
+          <Typography level="h4">{valueMain}</Typography>
+          <Typography level="body-md">{valueSecondary}</Typography>
+          {/* <Typography level="body-md">Current Balance:</Typography>
           <Typography level="h4">Ξ 0.56548 ETH</Typography>
-          <Typography level="body-md">$ 1500.25</Typography>
+          <Typography level="body-md">$ 1500.25</Typography> */}
           {/* <Typography level="body-md">
             Spend 0.265489 more ETH to get the Top 50% NFT
           </Typography> */}
@@ -40,8 +46,14 @@ export default function CardInvertedColors() {
           <Typography level="h6" sx={{ width: 64, textAlign: "center" }}>
             TOP
           </Typography>
-          <CircularProgress size="lg" determinate value={100 - percentageLevel}>
-            <Typography level="h5">{percentageLevel}%</Typography>
+          <CircularProgress
+            size="lg"
+            determinate={percentageLevel === -1 ? false : true}
+            value={percentageLevel === -1 ? 25 : 100 - percentageLevel}
+          >
+            <Typography level="h5">
+              {percentageLevel === -1 ? "" : percentageLevel + "%"}
+            </Typography>
           </CircularProgress>
         </CardContent>
       </CardContent>
@@ -55,7 +67,7 @@ export default function CardInvertedColors() {
         <Divider inset="context" />
         <CardContent
           orientation="horizontal"
-          sx={{ display: "flex", justifyContent: "space-between" }}
+          sx={{ display: "flex", justifyContent: "flex-start" }}
         >
           <Typography
             level="body-sm"
@@ -69,9 +81,17 @@ export default function CardInvertedColors() {
             level="body-sm"
             fontWeight="md"
             textColor="text.secondary"
+            sx={{ marginLeft: "auto" }} // Push this text to the far right
+          >
+            {requirmentsLevel}
+          </Typography>
+          {/* <Typography
+            level="body-sm"
+            fontWeight="md"
+            textColor="text.secondary"
           >
             Spend 0.265489 more ETH to get the Top 10% NFT
-          </Typography>
+          </Typography> */}
         </CardContent>
       </CardOverflow>
     </Card>

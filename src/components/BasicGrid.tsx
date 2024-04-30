@@ -79,55 +79,58 @@ export default function BasicGrid({ deviceType }) {
                 columnSpacing={{ xs: 1, sm: 2, md: 3 }}
               >
                 <Grid xs={12}>
-                  <Item>
-                    <CardInvertedColors />
-                  </Item>
+                  {/* DEMO DATA */}
+                  <CardInvertedColors
+                    title="Current Balance:"
+                    valueMain="Ξ 0.56548 ETH"
+                    valueSecondary="$ 1500.25"
+                    percentageLevel={55}
+                    requirmentsLevel="Spend 0.265489 more ETH to get the Top 10% NFT"
+                  />
                 </Grid>
                 <Grid xs={12}>
-                  <Item>
-                    <div
-                      //Dots fro Carousel lower
-                      style={{
-                        paddingBottom: "30px",
-                        position: "relative",
-                      }}
+                  <div
+                    //Dots fro Carousel lower
+                    style={{
+                      paddingBottom: "30px",
+                      position: "relative",
+                    }}
+                  >
+                    <Carousel
+                      additionalTransfrom={0}
+                      arrows
+                      autoPlaySpeed={3000}
+                      centerMode
+                      className=""
+                      containerClass="container-padding-bottom"
+                      dotListClass=""
+                      draggable
+                      focusOnSelect={false}
+                      infinite={false}
+                      itemClass="carousel-item-padding-30-px"
+                      keyBoardControl
+                      minimumTouchDrag={80}
+                      pauseOnHover
+                      renderArrowsWhenDisabled={false}
+                      renderButtonGroupOutside={false}
+                      renderDotsOutside={true}
+                      responsive={responsive}
+                      rewind={false}
+                      rewindWithAnimation={false}
+                      rtl={false}
+                      shouldResetAutoplay
+                      showDots={true}
+                      sliderClass=""
+                      slidesToSlide={1}
+                      swipeable
                     >
-                      <Carousel
-                        additionalTransfrom={0}
-                        arrows
-                        autoPlaySpeed={3000}
-                        centerMode
-                        className=""
-                        containerClass="container-padding-bottom"
-                        dotListClass=""
-                        draggable
-                        focusOnSelect={false}
-                        infinite={false}
-                        itemClass="carousel-item-padding-30-px"
-                        keyBoardControl
-                        minimumTouchDrag={80}
-                        pauseOnHover
-                        renderArrowsWhenDisabled={false}
-                        renderButtonGroupOutside={false}
-                        renderDotsOutside={true}
-                        responsive={responsive}
-                        rewind={false}
-                        rewindWithAnimation={false}
-                        rtl={false}
-                        shouldResetAutoplay
-                        showDots={true}
-                        sliderClass=""
-                        slidesToSlide={1}
-                        swipeable
-                      >
-                        <NftCard />
-                        <NftCard />
-                        <NftCard />
-                        <NftCard />
-                        <NftCard />
-                      </Carousel>
-                    </div>
-                  </Item>
+                      <NftCard />
+                      <NftCard />
+                      <NftCard />
+                      <NftCard />
+                      <NftCard />
+                    </Carousel>
+                  </div>
                 </Grid>
               </Grid>
             </Item>

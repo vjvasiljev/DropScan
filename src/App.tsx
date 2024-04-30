@@ -1,9 +1,13 @@
 import * as React from "react";
+import { useState } from "react";
 import { CssVarsProvider } from "@mui/joy/styles";
 import CssBaseline from "@mui/joy/CssBaseline";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import Typography from "@mui/joy/Typography";
+
+import { styled } from "@mui/joy/styles";
+import Sheet from "@mui/joy/Sheet";
 
 import Sidebar from "./components/Sidebar";
 
@@ -34,6 +38,18 @@ import Stack from "@mui/joy/Stack";
 
 import CardInvertedColors from "./components/CardInvertedColors";
 
+import Grid from "@mui/joy/Grid";
+import AboutChainInfo from "./components/AboutChainCard";
+
+const Item = styled(Sheet)(({ theme }) => ({
+  backgroundColor:
+    theme.palette.mode === "dark" ? theme.palette.background.level1 : "#fff",
+  ...theme.typography["body-sm"],
+  padding: theme.spacing(1),
+  textAlign: "center",
+  borderRadius: 4,
+  color: theme.vars.palette.text.secondary,
+}));
 // 0. Setup queryClient
 const queryClient = new QueryClient();
 
@@ -97,15 +113,16 @@ function SignTransactionButton() {
   );
 }
 
-function ConnectedAddress() {
+function ConnectedAddress({ onAddressChange }) {
   const { address, isConnecting, isDisconnected } = useAccount();
-  console.log(1);
-  if (isConnecting) return <div>Connecting…</div>;
-  if (isDisconnected) return <div>Disconnected</div>;
-  return <div>{address}</div>;
+
+  React.useEffect(() => {
+    onAddressChange(address); // This will call the parent function whenever the address changes
+  }, [address, onAddressChange]);
 }
 
 export default function App() {
+  const [walletAddress, setWalletAddress] = useState("0x0...");
   // const [drawerOpen, setDrawerOpen] = React.useState(false);
   // const [open, setOpen] = React.useState(false);
   // const { walletInfo } = useWalletInfo();
@@ -118,6 +135,12 @@ export default function App() {
   return (
     <>
       <CssVarsProvider disableTransitionOnChange>
+        <WagmiProvider config={wagmiConfig}>
+          <QueryClientProvider client={queryClient}>
+            <ConnectedAddress onAddressChange={setWalletAddress} />
+          </QueryClientProvider>
+        </WagmiProvider>
+
         {/* <Web3ModalProvider> */}
         {/* {console.log(colorScheme)} */}
         <ColorSchemeSetWalletConnect />
@@ -180,23 +203,46 @@ export default function App() {
                 flexDirection: { xs: "column", sm: "row" },
                 alignItems: { xs: "start", sm: "center" },
                 flexWrap: "wrap",
-                justifyContent: "space-between",
+                justifyContent: "center",
               }}
             >
-              <Typography level="h2" component="h1">
+              <Typography level="h1" component="h1">
                 Scroll Airdrop Checker
               </Typography>
             </Box>
 
-            <Typography level="h3">
-              <WagmiProvider config={wagmiConfig}>
-                <QueryClientProvider client={queryClient}>
-                  <ConnectedAddress />
-                </QueryClientProvider>
-              </WagmiProvider>
-            </Typography>
             <Typography level="h3">Total score: .... </Typography>
-            <CardInvertedColors />
+            <Grid>
+              <Item>
+                <AboutChainInfo />
+              </Item>
+              <Item>
+                <CardInvertedColors
+                  title={
+                    walletAddress ? (
+                      walletAddress
+                    ) : (
+                      <Typography>
+                        Please connect your wallet to see your address
+                        information.{" "}
+                      </Typography>
+                    )
+                  }
+                  valueMain={
+                    walletAddress ? (
+                      "You are in the top 44%"
+                    ) : (
+                      <Typography> </Typography>
+                    )
+                  }
+                  valueSecondary={""}
+                  percentageLevel={44}
+                  requirmentsLevel="TODO? Maybe some buttons with TODOS
+                  "
+                />
+              </Item>
+            </Grid>
+            {/* <CardInvertedColors /> */}
 
             <WalletInfo />
           </Box>
