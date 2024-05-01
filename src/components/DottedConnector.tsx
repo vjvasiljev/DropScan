@@ -5,6 +5,7 @@ import StepIndicator, { stepIndicatorClasses } from '@mui/joy/StepIndicator';
 import Typography from '@mui/joy/Typography';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 
 export function StepGenerator({ completed, active, disabled, label }) {
 
@@ -18,7 +19,7 @@ export function StepGenerator({ completed, active, disabled, label }) {
       indicator={
         <StepIndicator variant={disabled || active ?"outlined":"solid" } color="primary">
             {completed && <CheckRoundedIcon />}
-            {active && <KeyboardArrowDownRoundedIcon />}
+            {active && <HourglassTopIcon />}
             
             
           </StepIndicator>
@@ -120,15 +121,17 @@ const stepsDefault = [
 ];
 export default function DottedConnector({ steps=stepsDefault }) {
   return (
+    //TODO stepClasses. active has a prombelm color diffrence
     <Stepper
       sx={{
               width: '100%',
-              margin: 'auto',
+        margin: 'auto',
+        '--StepIndicator-size': '2rem',
         [`& .${stepClasses.completed}::after`]: {
           bgcolor: 'primary.500',
         },
         [`& .${stepClasses.active} .${stepIndicatorClasses.root}`]: {
-          borderColor: 'primary.500',
+          borderColor: 'success.500',
         },
 
         [`& .${stepClasses.root}:has(+ .${stepClasses.active})::after`]: {
