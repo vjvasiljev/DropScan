@@ -12,21 +12,29 @@ import NftCard from "./NftCard";
 import Box from "@mui/material/Box";
 import DottedConnector from "./DottedConnector";
 import { useState, useEffect } from "react";
+import InfoTooltip from "./InfoTooltip";
 
 const defaultValue = "Loading...";
 
 export default function CardInvertedColors({
   title = defaultValue,
+  infoTooltipTitle = defaultValue,
   valueMain = defaultValue,
   valueSecondary = defaultValue,
   percentageLevel = -1,
-  requirmentsLevel = defaultValue,
+  nextStepText = defaultValue,
+  nextStepData = defaultValue,
+  steps,
+  cardOverflowHidden = false,
 }) {
   return (
-    <Card variant="soft" color="success" invertedColors>
+    <Card variant="soft" color="primary" invertedColors>
       <CardContent orientation="horizontal">
         <CardContent sx={{ textAlign: "left" }}>
-          <Typography level="body-md">{title}</Typography>
+          <Typography level="body-md">
+            {title}
+            <InfoTooltip title={infoTooltipTitle} />
+          </Typography>
           <Typography level="h4">{valueMain}</Typography>
           <Typography level="body-md">{valueSecondary}</Typography>
           {/* <Typography level="body-md">Current Balance:</Typography>
@@ -60,10 +68,19 @@ export default function CardInvertedColors({
       <CardContent>
         <Divider inset="context" />
         <Box component="section" sx={{ p: 2 }}>
-          <DottedConnector />
+          <DottedConnector
+            steps={steps}
+            currentPercentageLevel={percentageLevel}
+          />
         </Box>
       </CardContent>
-      <CardOverflow variant="soft" sx={{ bgcolor: "background.level1" }}>
+      <CardOverflow
+        variant="soft"
+        sx={{
+          bgcolor: "background.level1",
+          display: cardOverflowHidden ? "none" : "block",
+        }}
+      >
         <Divider inset="context" />
         <CardContent
           orientation="horizontal"
@@ -83,15 +100,16 @@ export default function CardInvertedColors({
             textColor="text.secondary"
             sx={{ marginLeft: "auto" }} // Push this text to the far right
           >
-            {requirmentsLevel}
+            {nextStepText}
           </Typography>
-          {/* <Typography
+          <Divider orientation="vertical" />
+          <Typography
             level="body-sm"
-            fontWeight="md"
+            fontWeight="xl"
             textColor="text.secondary"
           >
-            Spend 0.265489 more ETH to get the Top 10% NFT
-          </Typography> */}
+            {nextStepData}
+          </Typography>
         </CardContent>
       </CardOverflow>
     </Card>

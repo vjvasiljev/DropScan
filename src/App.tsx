@@ -41,6 +41,10 @@ import CardInvertedColors from "./components/CardInvertedColors";
 import Grid from "@mui/joy/Grid";
 import AboutChainInfo from "./components/AboutChainCard";
 
+import ButtonGroup from "@mui/joy/ButtonGroup";
+import IconButton from "@mui/joy/IconButton";
+import Settings from "@mui/icons-material/Settings";
+
 const Item = styled(Sheet)(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === "dark" ? theme.palette.background.level1 : "#fff",
@@ -50,6 +54,55 @@ const Item = styled(Sheet)(({ theme }) => ({
   borderRadius: 4,
   color: theme.vars.palette.text.secondary,
 }));
+
+//dottedconnector data
+const dottedConnectorData = [
+  {
+    percent: 100,
+    nftLink: "src/assets/DropScanNFT75.webp",
+  },
+  {
+    percent: 90,
+    nftLink: "src/assets/DropScanNFT75.webp",
+  },
+  {
+    percent: 80,
+    nftLink: "src/assets/DropScanNFT50.webp",
+  },
+  {
+    percent: 70,
+    nftLink: "src/assets/DropScanNFT50.webp",
+  },
+  {
+    percent: 60,
+    nftLink: "src/assets/DropScanNFT25.webp",
+  },
+  {
+    percent: 50,
+    nftLink: "src/assets/DropScanNFT25.webp",
+  },
+  {
+    percent: 40,
+    nftLink: "src/assets/DropScanNFT10.webp",
+  },
+  {
+    percent: 30,
+    nftLink: "src/assets/DropScanNFT10.webp",
+  },
+  {
+    percent: 20,
+    nftLink: "src/assets/DropScanNFT5.webp",
+  },
+  {
+    percent: 10,
+    nftLink: "src/assets/DropScanNFT5.webp",
+  },
+  {
+    percent: 1,
+    nftLink: "src/assets/DropScanNFT5.webp",
+  },
+];
+
 // 0. Setup queryClient
 const queryClient = new QueryClient();
 
@@ -210,8 +263,39 @@ export default function App() {
                 Scroll Airdrop Checker
               </Typography>
             </Box>
+            <Box
+              sx={{
+                display: "flex",
+                mb: 1,
+                gap: 1,
+                flexDirection: { xs: "column", sm: "row" },
+                alignItems: { xs: "start", sm: "center" },
+                flexWrap: "wrap",
+                justifyContent: "center",
+              }}
+            >
+              <ButtonGroup
+                sx={{
+                  display: "flex",
+                  mb: 1,
+                  gap: 2,
+                  flexDirection: { xs: "column", sm: "row" },
+                  alignItems: { xs: "start", sm: "center" },
+                  flexWrap: "wrap",
+                  justifyContent: "right",
+                }}
+                spacing="0.5rem"
+                aria-label="spacing button group"
+                color="primary"
+                variant="solid"
+              >
+                <Button>Vote</Button>
+                <Button>Check In</Button>
+                <Button>Mint Random NFT</Button>
+                <Button>Random Smart Contract</Button>
+              </ButtonGroup>
+            </Box>
 
-            <Typography level="h3">Total score: .... </Typography>
             <Grid>
               <Item>
                 <AboutChainInfo />
@@ -230,18 +314,19 @@ export default function App() {
                   }
                   valueMain={
                     walletAddress ? (
-                      "You are in the top 44%"
+                      "You are in the top 44% of all Scroll addresses"
                     ) : (
                       <Typography> </Typography>
                     )
                   }
                   valueSecondary={""}
                   percentageLevel={44}
-                  requirmentsLevel="TODO? Maybe some buttons with TODOS
-                  "
+                  steps={dottedConnectorData}
+                  cardOverflowHidden={true}
                 />
               </Item>
             </Grid>
+
             {/* <CardInvertedColors /> */}
 
             <WalletInfo />

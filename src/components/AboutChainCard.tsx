@@ -22,7 +22,7 @@ export default function AboutChainInfo() {
       <Card
         orientation="horizontal"
         variant="soft"
-        color="success"
+        color="primary"
         invertedColors
       >
         <AspectRatio
