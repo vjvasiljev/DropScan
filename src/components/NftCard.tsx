@@ -11,9 +11,9 @@ export default function NftCard({ nftLink="", nftLevel=0,currentPercent=0 }) {
     return (
       // TODO MAKE THE CARD CLICK A MINT, WHOLE CARD CLICK, NOW YOU CAN MOVE IMAGE
       
-    <Card  variant='soft' color="primary">
+    <Card  variant='soft' color="primary" >
       <div>
-          <Typography level="title-sm">Top {nftLevel}%</Typography>
+          <Typography level="body-xs">Top {nftLevel}%</Typography>
        
         {/* <IconButton
           aria-label="bookmark Bahamas Islands"
@@ -33,7 +33,7 @@ export default function NftCard({ nftLink="", nftLevel=0,currentPercent=0 }) {
           alt=""
         />
             </AspectRatio>
-            <Typography level="body-xs"> Requirments not met</Typography>
+            {/* <Typography level="body-xs"> Requirments not met</Typography> */}
       <CardContent orientation="horizontal" sx={{alignSelf: 'center' }}>
         {/* <div>
           <Typography level="body-xs">Total price:</Typography>
@@ -45,7 +45,7 @@ export default function NftCard({ nftLink="", nftLevel=0,currentPercent=0 }) {
           variant="solid"
           size="md"
           color="primary"
-          aria-label="Explore Bahamas Islands"
+          aria-label="Mint NFT"
           sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600  }}
         >
           Mint

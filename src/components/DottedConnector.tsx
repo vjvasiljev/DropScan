@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import Stepper from "@mui/joy/Stepper";
 import Step, { stepClasses } from "@mui/joy/Step";
 import StepIndicator, { stepIndicatorClasses } from "@mui/joy/StepIndicator";
@@ -16,6 +17,7 @@ export function StepGenerator({ completed, active, disabled, label }) {
       active={active}
       // disabled={disabled}
       orientation="vertical"
+      sx={{ width: "100%" }}
       indicator={
         <StepIndicator
           variant={active ? "outlined" : "solid"}
@@ -36,9 +38,9 @@ export function StepGenerator({ completed, active, disabled, label }) {
     >
       <Typography
         level="h4"
-        fontWeight="xl"
+        fontWeight="sm"
         endDecorator={
-          <Typography fontSize="sm" fontWeight="normal">
+          <Typography level="body-xs" fontWeight="normal">
             {label}
           </Typography>
         }
@@ -74,9 +76,12 @@ export default function DottedConnector({
   return (
     //TODO stepClasses. active has a prombelm color diffrence
     <Stepper
+      // orientation={isVertical ? "vertical" : "horizontal"}
       sx={{
+        // display: isVertical ? "none" : "block",
         width: "100%",
         margin: "auto",
+        alignItems: "center",
         "--StepIndicator-size": "2rem",
         [`& .${stepClasses.completed}::after`]: {
           bgcolor: "primary.500",
@@ -120,7 +125,7 @@ export default function DottedConnector({
               ? true
               : false
           }
-          label={"TOP " + step.percent + "%"}
+          label={"Top " + step.percent + "%"}
         />
       ))}
     </Stepper>

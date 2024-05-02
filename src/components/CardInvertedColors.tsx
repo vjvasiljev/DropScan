@@ -27,6 +27,18 @@ export default function CardInvertedColors({
   steps,
   cardOverflowHidden = false,
 }) {
+  const [widthSm, setWidthSm] = useState(window.innerWidth < 768); // Example breakpoint at 768px
+  const [widthXs, setWidthXs] = useState(window.innerWidth < 500);
+  useEffect(() => {
+    const handleResize = () => {
+      setWidthSm(window.innerWidth < 768);
+      setWidthXs(window.innerWidth < 500);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <Card variant="soft" color="primary" invertedColors>
       <CardContent orientation="horizontal">
@@ -52,7 +64,7 @@ export default function CardInvertedColors({
           }}
         >
           <Typography level="h6" sx={{ width: 64, textAlign: "center" }}>
-            TOP
+            Top
           </Typography>
           <CircularProgress
             size="lg"
@@ -67,7 +79,17 @@ export default function CardInvertedColors({
       </CardContent>
       <CardContent>
         <Divider inset="context" />
-        <Box component="section" sx={{ p: 2 }}>
+        <Box
+          component="section"
+          sx={{
+            p: 2,
+            display: widthXs
+              ? "none"
+              : widthSm && steps.length > 5
+              ? "none"
+              : "block",
+          }}
+        >
           <DottedConnector
             steps={steps}
             currentPercentageLevel={percentageLevel}

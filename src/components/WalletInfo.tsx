@@ -268,7 +268,7 @@ const responsive = {
       max: 475,
       min: 0,
     },
-    items: 1,
+    items: 2,
     partialVisibilityGutter: 30,
   },
   tablet: {
@@ -276,7 +276,7 @@ const responsive = {
       max: 650,
       min: 475,
     },
-    items: 2,
+    items: 3,
     partialVisibilityGutter: 30,
   },
   desktop: {
@@ -284,7 +284,7 @@ const responsive = {
       max: 1200,
       min: 650,
     },
-    items: 3,
+    items: 4,
     partialVisibilityGutter: 40,
   },
   largeDesktop: {
@@ -292,7 +292,7 @@ const responsive = {
       max: 3000,
       min: 1200,
     },
-    items: 2,
+    items: 4,
     partialVisibilityGutter: 40,
   },
 };
