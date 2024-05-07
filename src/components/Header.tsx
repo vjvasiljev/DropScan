@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import { useColorScheme } from "@mui/joy/styles";
 import Box from "@mui/joy/Box";
 import Typography from "@mui/joy/Typography";
@@ -31,6 +32,8 @@ import ParaglidingIcon from "@mui/icons-material/Paragliding";
 import EvStationIcon from "@mui/icons-material/EvStation";
 
 import Badge from "@mui/joy/Badge";
+import GasPrices from "../assets/GasPrices";
+import { fetchGasPrices } from "../api/etherscan";
 
 import {
   createWeb3Modal,
@@ -77,6 +80,13 @@ function ColorSchemeToggle() {
 
 export default function Header() {
   const [open, setOpen] = React.useState(false);
+  const [gasInfo, setGasInfo] = useState(null);
+
+  useEffect(() => {
+    fetchGasPrices().then((data) => {
+      setGasInfo(data.result);
+    });
+  }, []);
 
   return (
     <Box
@@ -250,7 +260,11 @@ export default function Header() {
             <BookRoundedIcon />
           </IconButton>
         </Tooltip> */}
-        <Badge badgeContent={156} max={99999} showZero>
+        <Badge
+          badgeContent={gasInfo ? gasInfo.ProposeGasPrice : "-"}
+          max={99999}
+          showZero
+        >
           <IconButton
             size="md"
             color="neutral"
@@ -262,6 +276,7 @@ export default function Header() {
             <EvStationIcon />
           </IconButton>
         </Badge>
+        {/* <GasPrices /> */}
         {/* <IconButton
           size="md"
           color="neutral"
