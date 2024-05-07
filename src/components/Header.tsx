@@ -113,38 +113,6 @@ export default function Header() {
           <Typography level="title-lg">Drop Scan</Typography>
           {/* <ColorSchemeToggle sx={{ ml: "auto" }} /> */}
         </Box>
-
-        {/* <Button
-          variant="plain"
-          color="neutral"
-          aria-pressed="true"
-          component="a"
-          href="/joy-ui/getting-started/templates/email/"
-          size="sm"
-          sx={{ alignSelf: "center" }}
-        >
-          Email
-        </Button>
-        <Button
-          variant="plain"
-          color="neutral"
-          component="a"
-          href="/joy-ui/getting-started/templates/team/"
-          size="sm"
-          sx={{ alignSelf: "center" }}
-        >
-          Team
-        </Button>
-        <Button
-          variant="plain"
-          color="neutral"
-          component="a"
-          href="/joy-ui/getting-started/templates/files/"
-          size="sm"
-          sx={{ alignSelf: "center" }}
-        >
-          Files
-        </Button> */}
       </Stack>
       <Box sx={{ display: { xs: "inline-flex", sm: "none" } }}>
         <IconButton
@@ -164,7 +132,69 @@ export default function Header() {
           <Box sx={{ px: 1 }}>{/* <Navigation /> */}</Box>
         </Drawer>
       </Box>
-
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          gap: 1.5,
+          alignItems: "center",
+        }}
+      >
+        <Button
+          variant="outlined"
+          color="primary"
+          component="a"
+          size="sm"
+          sx={{ alignSelf: "center" }}
+        >
+          Wrap Eth
+        </Button>
+        <Button
+          variant="outlined"
+          color="primary"
+          component="a"
+          size="sm"
+          sx={{ alignSelf: "center" }}
+        >
+          Unwrap Eth
+        </Button>
+        <Button
+          variant="outlined"
+          color="primary"
+          component="a"
+          size="sm"
+          sx={{ alignSelf: "center" }}
+        >
+          Vote
+        </Button>
+        <Button
+          variant="outlined"
+          color="primary"
+          component="a"
+          size="sm"
+          sx={{ alignSelf: "center" }}
+        >
+          Check In
+        </Button>
+        <Button
+          variant="outlined"
+          color="primary"
+          component="a"
+          size="sm"
+          sx={{ alignSelf: "center" }}
+        >
+          Mint Random NFT
+        </Button>
+        <Button
+          variant="outlined"
+          color="primary"
+          component="a"
+          size="sm"
+          sx={{ alignSelf: "center" }}
+        >
+          Random Smart Contract
+        </Button>
+      </Box>
       <Box
         sx={{
           display: "flex",

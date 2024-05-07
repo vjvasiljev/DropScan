@@ -13,6 +13,7 @@ import Box from "@mui/material/Box";
 import DottedConnector from "./DottedConnector";
 import { useState, useEffect } from "react";
 import InfoTooltip from "./InfoTooltip";
+import Skeleton from "@mui/joy/Skeleton";
 
 const defaultValue = "Loading...";
 
@@ -47,8 +48,12 @@ export default function CardInvertedColors({
             {title}
             <InfoTooltip title={infoTooltipTitle} />
           </Typography>
-          <Typography level="h4">{valueMain}</Typography>
-          <Typography level="body-md">{valueSecondary}</Typography>
+          <Typography level="h4">
+            <Skeleton loading={false}>{valueMain}</Skeleton>
+          </Typography>
+          <Typography level="body-md">
+            <Skeleton loading={false}>{valueSecondary} </Skeleton>
+          </Typography>
           {/* <Typography level="body-md">Current Balance:</Typography>
           <Typography level="h4">Ξ 0.56548 ETH</Typography>
           <Typography level="body-md">$ 1500.25</Typography> */}
@@ -130,7 +135,7 @@ export default function CardInvertedColors({
             fontWeight="xl"
             textColor="text.secondary"
           >
-            {nextStepData}
+            <Skeleton loading={false}>{nextStepData}</Skeleton>
           </Typography>
         </CardContent>
       </CardOverflow>

@@ -44,6 +44,7 @@ import AboutChainInfo from "./components/AboutChainCard";
 import ButtonGroup from "@mui/joy/ButtonGroup";
 import IconButton from "@mui/joy/IconButton";
 import Settings from "@mui/icons-material/Settings";
+import Footer from "./components/Footer";
 
 const Item = styled(Sheet)(({ theme }) => ({
   backgroundColor:
@@ -259,43 +260,10 @@ export default function App() {
                 justifyContent: "center",
               }}
             >
-              <Typography level="h1" component="h1">
+              {/* <Typography level="h1" component="h1">
                 Scroll Airdrop Checker
-              </Typography>
+              </Typography> */}
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                mb: 1,
-                gap: 1,
-                flexDirection: { xs: "column", sm: "row" },
-                alignItems: { xs: "start", sm: "center" },
-                flexWrap: "wrap",
-                justifyContent: "center",
-              }}
-            >
-              <ButtonGroup
-                sx={{
-                  display: "flex",
-                  mb: 1,
-                  gap: 2,
-                  flexDirection: { xs: "column", sm: "row" },
-                  alignItems: { xs: "start", sm: "center" },
-                  flexWrap: "wrap",
-                  justifyContent: "right",
-                }}
-                spacing="0.5rem"
-                aria-label="spacing button group"
-                color="primary"
-                variant="solid"
-              >
-                <Button>Vote</Button>
-                <Button>Check In</Button>
-                <Button>Mint Random NFT</Button>
-                <Button>Random Smart Contract</Button>
-              </ButtonGroup>
-            </Box>
-
             <Grid>
               <Item>
                 <AboutChainInfo />
@@ -333,6 +301,7 @@ export default function App() {
           </Box>
         </Box>
         {/* </Web3ModalProvider> */}
+        <Footer />
       </CssVarsProvider>
     </>
   );
