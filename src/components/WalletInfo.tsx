@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from 'react';
 import { styled } from "@mui/joy/styles";
 import Sheet from "@mui/joy/Sheet";
 import Grid from "@mui/joy/Grid";
@@ -7,6 +8,106 @@ import NftCard from "./NftCard";
 import Carousel from "react-multi-carousel";
 import Typography from "@mui/joy/Typography";
 import "react-multi-carousel/lib/styles.css";
+
+//Get transaction list
+const getTransactionsByAddress = async (
+  walletAddress,
+  startBlock = 0,
+  endBlock = 99999999,
+  page = 1,
+  offset = 9999,
+  sort = "asc"
+) => {
+  if (!walletAddress) {
+    console.log("No account address provided.");
+    return;
+  }
+
+  const apiBaseUrl = "https://api.scrollscan.com/api";
+  const apiKeyToken = import.meta.env.VITE_SCROLL_SCAN_API; // Replace with your actual API key token
+  // Construct the API endpoint with the given query parameters
+  const url = `${apiBaseUrl}?module=account&action=txlist&address=${walletAddress}&startblock=${startBlock}&endblock=${endBlock}&page=${page}&offset=${offset}&sort=${sort}&apikey=${apiKeyToken}`;
+
+  try {
+    // setIsLoading(true); // Start loading
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.status !== "1") {
+      console.error("Error fetching transactions:", data.message);
+      return [];
+    }
+
+    // Handle the transactions data
+    console.log(data.result);
+    // You can set the transactions data to a state or return it depending on your app's design
+    setTransactions(data.result);
+    setNumTotalTransactions(data.result.length);
+
+    // Function to calculate the number of successful transactions
+    const calculateSuccessfulTransactions = (transactions) => {
+      return transactions.filter((tx) => tx.isError === "0").length;
+    };
+
+    // Number of successful transactions
+    const numOfSuccessfulTransactions = calculateSuccessfulTransactions(
+      data.result
+    );
+    setNumSuccesfulTransactions(numOfSuccessfulTransactions);
+
+    // Helper function to format a date to YYYY-MM-DD
+    const formatDate = (date) => {
+      return date.toISOString().split("T")[0];
+    };
+
+    // Helper function to get the week number in the year
+    const getWeekNumber = (date) => {
+      const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+      const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+      return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+    };
+
+    // Helper function to format a date to its year-week representation "YYYY-WW"
+    const formatWeek = (date) => {
+      return `${date.getFullYear()}-W${getWeekNumber(date)
+        .toString()
+        .padStart(2, "0")}`;
+    };
+
+    // Helper function to calculate unique days, weeks, and months
+    const calculateUniquePeriods = (transactions) => {
+      // Assuming you have transactions in your state or props
+      let tempUniqueDays = new Set(uniqueDays);
+      let tempUniqueWeeks = new Set(uniqueWeeks);
+      let tempUniqueMonths = new Set(uniqueMonths);
+
+      transactions.forEach((tx) => {
+        const date = new Date(tx.timeStamp * 1000);
+        tempUniqueDays.add(formatDate(date)); // Add to temporary unique days
+        tempUniqueWeeks.add(formatWeek(date)); // Add to temporary unique weeks
+        tempUniqueMonths.add(`${date.getFullYear()}-${date.getMonth() + 1}`); // Add to temporary unique months
+      });
+
+      // Update the state with the new Sets
+      setUniqueDays(tempUniqueDays);
+      setUniqueWeeks(tempUniqueWeeks);
+      setUniqueMonths(tempUniqueMonths);
+      setTotalUniqueDays(tempUniqueDays.size);
+      setTotalUniqueWeeks(tempUniqueWeeks.size);
+      setTotalUniqueMonths(tempUniqueMonths.size);
+    };
+
+    // Get the totals
+    calculateUniquePeriods(data.result);
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+    return [];
+  } finally {
+    // setIsLoading(false); // Stop loading
+  }
+};
+
 
 const CardData = {
   cards: [
@@ -344,7 +445,36 @@ const Item = styled(Sheet)(({ theme }) => ({
 //   );
 // };
 
-export default function WalletInfo({ deviceType }) {
+export default function WalletInfo({ deviceType, walletAddress }) {
+  const [account, setAccount] = useState(null);
+  const [network, setNetwork] = useState();
+  const [balance, setBalance] = useState();
+  const [transactionCount, setTransactionCount] = useState();
+  const [gas, setGas] = useState();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [transactions, setTransactions] = useState([]);
+  const [numTotalTransactions, setNumTotalTransactions] = useState(0);
+  const [numSuccesfulTransactions, setNumSuccesfulTransactions] = useState(0);
+  const [ethPrice, setEthPrice] = useState({ BTC: null, USD: null, EUR: null });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [uniqueDays, setUniqueDays] = useState(new Set());
+  const [uniqueWeeks, setUniqueWeeks] = useState(new Set());
+  const [uniqueMonths, setUniqueMonths] = useState(new Set());
+  const [totalUniqueDays, setTotalUniqueDays] = useState();
+  const [totalUniqueWeeks, setTotalUniqueWeeks] = useState();
+  const [totalUniqueMonths, setTotalUniqueMonths] = useState();
+
+
+  useEffect(() => {
+    if (window.ethereum && walletAddress) {
+      // getEtherBalance();
+      getTransactionsByAddress(walletAddress);
+    }
+  }, [walletAddress]);
+  
   return (
     <>
       <style>

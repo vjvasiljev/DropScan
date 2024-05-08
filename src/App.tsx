@@ -297,7 +297,7 @@ export default function App() {
 
             {/* <CardInvertedColors /> */}
 
-            <WalletInfo />
+            <WalletInfo walletAddress={walletAddress} />
           </Box>
         </Box>
         {/* </Web3ModalProvider> */}
