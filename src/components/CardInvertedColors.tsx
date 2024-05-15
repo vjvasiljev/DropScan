@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 import InfoTooltip from "./InfoTooltip";
 import Skeleton from "@mui/joy/Skeleton";
 
-const defaultValue = "Loading...";
+const defaultValue = "Initializing...";
 
 export default function CardInvertedColors({
   title = defaultValue,

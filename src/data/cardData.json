@@ -1,0 +1,250 @@
+[
+  {
+    "title": "Current Balance",
+    "infoTooltipTitle": "Total balance including Ethereum and stablecoins",
+    "valueMain": "Ξ0 ETH",
+    "valueSecondary": "$0",
+    "percentageLevel": 10,
+    "nextStepText": "Add this amount to your wallet",
+    "nextStepData": "Ξ0.06548 ETH",
+    "steps": [
+      {
+        "percent": 75,
+        "nftLink": "src/assets/DropScanNFT75.webp"
+      },
+      {
+        "percent": 50,
+        "nftLink": "src/assets/DropScanNFT50.webp"
+      },
+      {
+        "percent": 25,
+        "nftLink": "src/assets/DropScanNFT25.webp"
+      },
+      {
+        "percent": 10,
+        "nftLink": "src/assets/DropScanNFT10.webp"
+      },
+      {
+        "percent": 5,
+        "nftLink": "src/assets/DropScanNFT5.webp"
+      }
+    ]
+  },
+  {
+    "title": "Transaction Volume",
+    "infoTooltipTitle": "This metric shows the total amount of money transacted through this blockchain account, indicating its financial activity.",
+    "valueMain": "Ξ0 ETH",
+    "valueSecondary": "$0 USD",
+    "percentageLevel": 21,
+    "nextStepText": "Increase your transaction volume by",
+    "nextStepData": "Ξ1.56548 ETH",
+    "steps": [
+      {
+        "percent": 75,
+        "nftLink": "src/assets/DropScanNFT75.webp"
+      },
+      {
+        "percent": 50,
+        "nftLink": "src/assets/DropScanNFT50.webp"
+      },
+      {
+        "percent": 25,
+        "nftLink": "src/assets/DropScanNFT25.webp"
+      },
+      {
+        "percent": 10,
+        "nftLink": "src/assets/DropScanNFT10.webp"
+      },
+      {
+        "percent": 5,
+        "nftLink": "src/assets/DropScanNFT5.webp"
+      }
+    ]
+  },
+  {
+    "title": "Total Transaction Count",
+    "infoTooltipTitle": "Total transactions successfully completed",
+    "valueMain": "0",
+    "valueSecondary": "",
+    "percentageLevel": 0.7,
+    "nextStepText": "Add this amount to your wallet",
+    "nextStepData": "Ξ 0.06548 ETH",
+    "steps": [
+      {
+        "percent": 75,
+        "nftLink": "src/assets/DropScanNFT75.webp"
+      },
+      {
+        "percent": 50,
+        "nftLink": "src/assets/DropScanNFT50.webp"
+      },
+      {
+        "percent": 25,
+        "nftLink": "src/assets/DropScanNFT25.webp"
+      },
+      {
+        "percent": 10,
+        "nftLink": "src/assets/DropScanNFT10.webp"
+      },
+      {
+        "percent": 5,
+        "nftLink": "src/assets/DropScanNFT5.webp"
+      }
+    ]
+  },
+  {
+    "title": "Unique Smart Contracts",
+    "infoTooltipTitle": "Total unique smart contracts interacted with",
+    "valueMain": 0,
+    "valueSecondary": "",
+    "percentageLevel": 11,
+    "nextStepText": "Interact with smart contracts",
+    "nextStepData": 16,
+    "steps": [
+      {
+        "percent": 75,
+        "nftLink": "src/assets/DropScanNFT75.webp"
+      },
+      {
+        "percent": 50,
+        "nftLink": "src/assets/DropScanNFT50.webp"
+      },
+      {
+        "percent": 25,
+        "nftLink": "src/assets/DropScanNFT25.webp"
+      },
+      {
+        "percent": 10,
+        "nftLink": "src/assets/DropScanNFT10.webp"
+      },
+      {
+        "percent": 5,
+        "nftLink": "src/assets/DropScanNFT5.webp"
+      }
+    ]
+  },
+  {
+    "title": "Unique Days",
+    "infoTooltipTitle": "Unique days this address was active on",
+    "valueMain": 0,
+    "valueSecondary": "",
+    "percentageLevel": 54,
+    "nextStepText": "Days to be active on",
+    "nextStepData": 6,
+    "steps": [
+      {
+        "percent": 75,
+        "nftLink": "src/assets/DropScanNFT75.webp"
+      },
+      {
+        "percent": 50,
+        "nftLink": "src/assets/DropScanNFT50.webp"
+      },
+      {
+        "percent": 25,
+        "nftLink": "src/assets/DropScanNFT25.webp"
+      },
+      {
+        "percent": 10,
+        "nftLink": "src/assets/DropScanNFT10.webp"
+      },
+      {
+        "percent": 5,
+        "nftLink": "src/assets/DropScanNFT5.webp"
+      }
+    ]
+  },
+  {
+    "title": "Unique Weeks",
+    "infoTooltipTitle": "Unique weeks this address was active on",
+    "valueMain": 0,
+    "valueSecondary": "",
+    "percentageLevel": 43,
+    "nextStepText": "Weeks to be active on",
+    "nextStepData": 3,
+    "steps": [
+      {
+        "percent": 75,
+        "nftLink": "src/assets/DropScanNFT75.webp"
+      },
+      {
+        "percent": 50,
+        "nftLink": "src/assets/DropScanNFT50.webp"
+      },
+      {
+        "percent": 25,
+        "nftLink": "src/assets/DropScanNFT25.webp"
+      },
+      {
+        "percent": 10,
+        "nftLink": "src/assets/DropScanNFT10.webp"
+      },
+      {
+        "percent": 5,
+        "nftLink": "src/assets/DropScanNFT5.webp"
+      }
+    ]
+  },
+  {
+    "title": "Unique Months",
+    "infoTooltipTitle": "Unique months this address was active on",
+    "valueMain": 0,
+    "valueSecondary": "",
+    "percentageLevel": 84,
+    "nextStepText": "Months to be active on",
+    "nextStepData": 3,
+    "steps": [
+      {
+        "percent": 75,
+        "nftLink": "src/assets/DropScanNFT75.webp"
+      },
+      {
+        "percent": 50,
+        "nftLink": "src/assets/DropScanNFT50.webp"
+      },
+      {
+        "percent": 25,
+        "nftLink": "src/assets/DropScanNFT25.webp"
+      },
+      {
+        "percent": 10,
+        "nftLink": "src/assets/DropScanNFT10.webp"
+      },
+      {
+        "percent": 5,
+        "nftLink": "src/assets/DropScanNFT5.webp"
+      }
+    ]
+  },
+  {
+    "title": "Gas Fees Spent",
+    "infoTooltipTitle": "Total gas fees spent by this account",
+    "valueMain": "Ξ0 ETH",
+    "valueSecondary": "$0 USD",
+    "percentageLevel": 71,
+    "nextStepText": "Spend more on gas fees",
+    "nextStepData": "Ξ 0.154780 ETH",
+    "steps": [
+      {
+        "percent": 75,
+        "nftLink": "src/assets/DropScanNFT75.webp"
+      },
+      {
+        "percent": 50,
+        "nftLink": "src/assets/DropScanNFT50.webp"
+      },
+      {
+        "percent": 25,
+        "nftLink": "src/assets/DropScanNFT25.webp"
+      },
+      {
+        "percent": 10,
+        "nftLink": "src/assets/DropScanNFT10.webp"
+      },
+      {
+        "percent": 5,
+        "nftLink": "src/assets/DropScanNFT5.webp"
+      }
+    ]
+  }
+]

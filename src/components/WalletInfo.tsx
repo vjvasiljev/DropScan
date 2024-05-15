@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { styled } from "@mui/joy/styles";
 import Sheet from "@mui/joy/Sheet";
 import Grid from "@mui/joy/Grid";
@@ -7,11 +7,31 @@ import CardInvertedColors from "./CardInvertedColors";
 import NftCard from "./NftCard";
 import Carousel from "react-multi-carousel";
 import Typography from "@mui/joy/Typography";
+import cardData from "/src/data/cardData.json";
 import "react-multi-carousel/lib/styles.css";
+import Button from "@mui/joy/Button";
+import Web3 from "web3";
+
+const ETH_DECIMAL_PLACES = 6;
 
 //Get transaction list
 const getTransactionsByAddress = async (
   walletAddress,
+  setTransactions,
+  setNumTotalTransactions,
+  setNumSuccesfulTransactions,
+  uniqueDays,
+  setUniqueDays,
+  uniqueWeeks,
+  setUniqueWeeks,
+  uniqueMonths,
+  setUniqueMonths,
+  setTotalUniqueDays,
+  setTotalUniqueWeeks,
+  setTotalUniqueMonths,
+  setTotalUniqueContracts,
+  setTotalTransactionValue,
+  setTotalGasSpent,
   startBlock = 0,
   endBlock = 99999999,
   page = 1,
@@ -40,7 +60,7 @@ const getTransactionsByAddress = async (
     }
 
     // Handle the transactions data
-    console.log(data.result);
+    // console.log("Get transaction list");
     // You can set the transactions data to a state or return it depending on your app's design
     setTransactions(data.result);
     setNumTotalTransactions(data.result.length);
@@ -98,8 +118,57 @@ const getTransactionsByAddress = async (
       setTotalUniqueMonths(tempUniqueMonths.size);
     };
 
+    // Helper function to calculate unique smart contracts interacted with
+    const calculateUniqueContracts = (transactions) => {
+      const uniqueContracts = new Set();
+
+      transactions.forEach((tx) => {
+        if (tx.to) {
+          uniqueContracts.add(tx.to.toLowerCase());
+        }
+      });
+
+      return uniqueContracts.size;
+    };
+
+    //helper function to calculate volume
+    const calculateTotalTransactionValue = (transactions) => {
+      const web3 = new Web3(window.ethereum);
+      // Convert from Wei to Ether
+      return transactions.reduce((total, tx) => {
+        return total + parseFloat(web3.utils.fromWei(tx.value, "ether"));
+      }, 0);
+    };
+
+    //Add a helper function to calculate the total gas spent:
+    const calculateTotalGasSpent = (transactions) => {
+      const web3 = new Web3(window.ethereum);
+
+      return transactions.reduce((total, tx) => {
+        const gasSpentInWei = BigInt(tx.gasUsed) * BigInt(tx.gasPrice);
+        const gasSpentInEther = parseFloat(
+          web3.utils.fromWei(gasSpentInWei.toString(), "ether")
+        );
+        return total + gasSpentInEther;
+      }, 0);
+    };
+
     // Get the totals
     calculateUniquePeriods(data.result);
+
+    // Get the total unique contracts interacted with
+    const totalUniqueContracts = calculateUniqueContracts(data.result);
+    setTotalUniqueContracts(totalUniqueContracts);
+
+    //Add the function call to calculate the total transaction value and set it:
+    const totalTransactionValue = calculateTotalTransactionValue(data.result);
+    setTotalTransactionValue(
+      Number(totalTransactionValue).toFixed(ETH_DECIMAL_PLACES)
+    );
+
+    //Add the function call to calculate the total gas spent and set it:
+    const totalGasSpent = calculateTotalGasSpent(data.result);
+    setTotalGasSpent(totalGasSpent.toFixed(ETH_DECIMAL_PLACES));
   } catch (error) {
     console.error("Error fetching transactions:", error);
     return [];
@@ -108,259 +177,48 @@ const getTransactionsByAddress = async (
   }
 };
 
+const getEtherBalance = async (walletAddress, setBalance) => {
+  // Make sure there is an account address to check. Without an address, the API call won't work.
+  if (!walletAddress) {
+    console.log("No account address to check balance for.");
+    return;
+  }
 
-const CardData = {
-  cards: [
-    {
-      title: "Current Balance",
-      infoTooltipTitle: "Total balance including Ethereum and stablecoins",
-      valueMain: "Ξ0.56548 ETH",
-      valueSecondary: "$1500.25",
-      percentageLevel: 10,
-      nextStepText: "Add this amount to your wallet",
-      nextStepData: "Ξ0.06548 ETH",
-      steps: [
-        {
-          percent: 75,
-          nftLink: "src/assets/DropScanNFT75.webp"
-        },
-        {
-          percent: 50,
-          nftLink: "src/assets/DropScanNFT50.webp"
-        },
-        {
-          percent: 25,
-          nftLink: "src/assets/DropScanNFT25.webp"
-        },
-        {
-          percent: 10,
-          nftLink: "src/assets/DropScanNFT10.webp"
-        },
-        {
-          percent: 5,
-          nftLink: "src/assets/DropScanNFT5.webp"
-        },
-      ],
-    },
-    {
-      title: "Transaction Volume",
-      infoTooltipTitle:
-        "This metric shows the total amount of money transacted through this blockchain account, indicating its financial activity.",
-      valueMain: "Ξ10.47 ETH",
-      valueSecondary: "$32457 USD",
-      percentageLevel: 21,
-      nextStepText: "Increase your transaction volume by",
-      nextStepData: "Ξ1.56548 ETH",
-      steps: [
-        {
-          percent: 75,
-          nftLink: "src/assets/DropScanNFT75.webp"
-        },
-        {
-          percent: 50,
-          nftLink: "src/assets/DropScanNFT50.webp"
-        },
-        {
-          percent: 25,
-          nftLink: "src/assets/DropScanNFT25.webp"
-        },
-        {
-          percent: 10,
-          nftLink: "src/assets/DropScanNFT10.webp"
-        },
-        {
-          percent: 5,
-          nftLink: "src/assets/DropScanNFT5.webp"
-        },
-      ],
-    },
-    {
-      title: "Total Transaction Count",
-      infoTooltipTitle: "Total transactions successfully completed",
-      valueMain: 148,
-      valueSecondary: "",
-      percentageLevel: 0.7,
-      nextStepText: "Add this amount to your wallet",
-      nextStepData: "Ξ 0.06548 ETH",
-      steps: [
-        {
-          percent: 75,
-          nftLink: "src/assets/DropScanNFT75.webp"
-        },
-        {
-          percent: 50,
-          nftLink: "src/assets/DropScanNFT50.webp"
-        },
-        {
-          percent: 25,
-          nftLink: "src/assets/DropScanNFT25.webp"
-        },
-        {
-          percent: 10,
-          nftLink: "src/assets/DropScanNFT10.webp"
-        },
-        {
-          percent: 5,
-          nftLink: "src/assets/DropScanNFT5.webp"
-        },
-      ],
-    },
-    {
-      title: "Unique Smart Contracts",
-      infoTooltipTitle: "Total unique smart contracts interacted with",
-      valueMain: 34,
-      valueSecondary: "",
-      percentageLevel: 11,
-      nextStepText: "Interact with smart contracts",
-      nextStepData: 16,
-      steps: [
-        {
-          percent: 75,
-          nftLink: "src/assets/DropScanNFT75.webp"
-        },
-        {
-          percent: 50,
-          nftLink: "src/assets/DropScanNFT50.webp"
-        },
-        {
-          percent: 25,
-          nftLink: "src/assets/DropScanNFT25.webp"
-        },
-        {
-          percent: 10,
-          nftLink: "src/assets/DropScanNFT10.webp"
-        },
-        {
-          percent: 5,
-          nftLink: "src/assets/DropScanNFT5.webp"
-        },
-      ],
-    },
-    {
-      title: "Unique Days",
-      infoTooltipTitle: "Unique days this address was active on",
-      valueMain: 9,
-      valueSecondary: "",
-      percentageLevel: 54,
-      nextStepText: "Days to be active on",
-      nextStepData: 6,
-      steps: [
-        {
-          percent: 75,
-          nftLink: "src/assets/DropScanNFT75.webp"
-        },
-        {
-          percent: 50,
-          nftLink: "src/assets/DropScanNFT50.webp"
-        },
-        {
-          percent: 25,
-          nftLink: "src/assets/DropScanNFT25.webp"
-        },
-        {
-          percent: 10,
-          nftLink: "src/assets/DropScanNFT10.webp"
-        },
-        {
-          percent: 5,
-          nftLink: "src/assets/DropScanNFT5.webp"
-        },
-      ],
-    },
-    {
-      title: "Unique Weeks",
-      infoTooltipTitle: "Unique weeks this address was active on",
-      valueMain: 3,
-      valueSecondary: "",
-      percentageLevel: 43,
-      nextStepText: "Weeks to be active on",
-      nextStepData: 3,
-      steps: [
-        {
-          percent: 75,
-          nftLink: "src/assets/DropScanNFT75.webp"
-        },
-        {
-          percent: 50,
-          nftLink: "src/assets/DropScanNFT50.webp"
-        },
-        {
-          percent: 25,
-          nftLink: "src/assets/DropScanNFT25.webp"
-        },
-        {
-          percent: 10,
-          nftLink: "src/assets/DropScanNFT10.webp"
-        },
-        {
-          percent: 5,
-          nftLink: "src/assets/DropScanNFT5.webp"
-        },
-      ],
-    },
-    {
-      title: "Unique Months",
-      infoTooltipTitle: "Unique months this address was active on",
-      valueMain: 1,
-      valueSecondary: "",
-      percentageLevel: 84,
-      nextStepText: "Months to be active on",
-      nextStepData: 3,
-      steps: [
-        {
-          percent: 75,
-          nftLink: "src/assets/DropScanNFT75.webp"
-        },
-        {
-          percent: 50,
-          nftLink: "src/assets/DropScanNFT50.webp"
-        },
-        {
-          percent: 25,
-          nftLink: "src/assets/DropScanNFT25.webp"
-        },
-        {
-          percent: 10,
-          nftLink: "src/assets/DropScanNFT10.webp"
-        },
-        {
-          percent: 5,
-          nftLink: "src/assets/DropScanNFT5.webp"
-        },
-      ],
-    },
-    {
-      title: "Gas Fees Spent",
-      infoTooltipTitle: "Total gas fees spent by this account",
-      valueMain: "Ξ0.07 ETH",
-      valueSecondary: "$14.45 USD",
-      percentageLevel: 71,
-      nextStepText: "Spend more on gas fees",
-      nextStepData: "Ξ 0.154780 ETH",
-      steps: [
-        {
-          percent: 75,
-          nftLink: "src/assets/DropScanNFT75.webp"
-        },
-        {
-          percent: 50,
-          nftLink: "src/assets/DropScanNFT50.webp"
-        },
-        {
-          percent: 25,
-          nftLink: "src/assets/DropScanNFT25.webp"
-        },
-        {
-          percent: 10,
-          nftLink: "src/assets/DropScanNFT10.webp"
-        },
-        {
-          percent: 5,
-          nftLink: "src/assets/DropScanNFT5.webp"
-        },
-      ],
-    },
-  ],
+  const apiBaseUrl = "https://api.scrollscan.com/api";
+  const apiKeyToken = import.meta.env.VITE_SCROLL_SCAN_API; // Replace with your actual API key token
+  const url = `${apiBaseUrl}?module=account&action=balance&address=${walletAddress}&tag=latest&apikey=${apiKeyToken}`;
+
+  // Ensure loading is true
+  // setIsLoading(true);
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      console.error("Network response was not ok:", response.statusText);
+      return;
+    }
+
+    const data = await response.json();
+    console.log("API Response Data:", data); // Log the entire response for debugging
+
+    // Check if the data contains an error message, in which case you should not proceed
+    if (!data.result || data.result.startsWith("Error!")) {
+      console.error("Error fetching balance:", data.result);
+    } else {
+      const web3 = new Web3(window.ethereum);
+      // Convert from Wei to Ether and set the balance state
+      setBalance(
+        Number(web3.utils.fromWei(data.result, "ether")).toFixed(
+          ETH_DECIMAL_PLACES
+        )
+      );
+    }
+  } catch (error) {
+    console.error("Error fetching balance:", error);
+  } finally {
+    // setIsLoading(false);
+  }
 };
 
 const responsive = {
@@ -448,9 +306,8 @@ const Item = styled(Sheet)(({ theme }) => ({
 export default function WalletInfo({ deviceType, walletAddress }) {
   const [account, setAccount] = useState(null);
   const [network, setNetwork] = useState();
-  const [balance, setBalance] = useState();
+  const [balance, setBalance] = useState(0);
   const [transactionCount, setTransactionCount] = useState();
-  const [gas, setGas] = useState();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -463,20 +320,120 @@ export default function WalletInfo({ deviceType, walletAddress }) {
   const [uniqueDays, setUniqueDays] = useState(new Set());
   const [uniqueWeeks, setUniqueWeeks] = useState(new Set());
   const [uniqueMonths, setUniqueMonths] = useState(new Set());
-  const [totalUniqueDays, setTotalUniqueDays] = useState();
-  const [totalUniqueWeeks, setTotalUniqueWeeks] = useState();
-  const [totalUniqueMonths, setTotalUniqueMonths] = useState();
+  const [totalUniqueDays, setTotalUniqueDays] = useState(0);
+  const [totalUniqueWeeks, setTotalUniqueWeeks] = useState(0);
+  const [totalUniqueMonths, setTotalUniqueMonths] = useState(0);
+  const [totalUniqueContracts, setTotalUniqueContracts] = useState(0);
+  const [totalTransactionValue, setTotalTransactionValue] = useState(0);
+  const [totalGasSpent, setTotalGasSpent] = useState();
 
+  // Saving json to state
+  const [cardDataActive, setCardDataActive] = useState(cardData);
+
+  //Updating card data with fetched data
+  const updateCardData = () => {
+    // console.log("Updated card data");
+    // Define the values for valueMain and valueSecondary for each card index
+    const updateValues = {
+      0: {
+        valueMain: "Ξ" + balance + " ETH",
+        valueSecondary: "$" + (balance * ethPrice.USD).toFixed(2) + " USD",
+      },
+      1: {
+        valueMain: "Ξ" + totalTransactionValue + " ETH",
+        valueSecondary:
+          "$" + (totalTransactionValue * ethPrice.USD).toFixed(2) + " USD",
+      },
+      2: { valueMain: numSuccesfulTransactions },
+      3: { valueMain: totalUniqueContracts },
+      4: { valueMain: totalUniqueDays },
+      5: { valueMain: totalUniqueWeeks },
+      6: { valueMain: totalUniqueMonths },
+      7: {
+        valueMain: "Ξ" + totalGasSpent + " ETH",
+        valueSecondary:
+          "$" + (totalGasSpent * ethPrice.USD).toFixed(2) + " USD",
+      },
+    };
+
+    // Create a new array with the updated values for each card
+    const updatedCardData = cardDataActive.map((card, index) => {
+      if (updateValues.hasOwnProperty(index)) {
+        return { ...card, ...updateValues[index] };
+      }
+      return card;
+    });
+    setCardDataActive(updatedCardData);
+  };
 
   useEffect(() => {
     if (window.ethereum && walletAddress) {
-      // getEtherBalance();
-      getTransactionsByAddress(walletAddress);
+      getEtherBalance(walletAddress, setBalance);
+      getTransactionsByAddress(
+        walletAddress,
+        setTransactions,
+        setNumTotalTransactions,
+        setNumSuccesfulTransactions,
+        uniqueDays,
+        setUniqueDays,
+        uniqueWeeks,
+        setUniqueWeeks,
+        uniqueMonths,
+        setUniqueMonths,
+        setTotalUniqueDays,
+        setTotalUniqueWeeks,
+        setTotalUniqueMonths,
+        setTotalUniqueContracts,
+        setTotalTransactionValue,
+        setTotalGasSpent
+      );
     }
+    // console.log(walletAddress);
   }, [walletAddress]);
-  
+
+  //Updating the dynamic data in the cards
+  useEffect(() => {
+    updateCardData();
+  }, [walletAddress, transactions]);
+
+  useEffect(() => {
+    const getEthPrice = async () => {
+      // Construct the API endpoint URL with query parameters
+      const url = new URL("https://min-api.cryptocompare.com/data/price");
+      url.search = new URLSearchParams({
+        fsym: "ETH",
+        tsyms: "BTC,USD,EUR",
+      }).toString();
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await fetch(url);
+        // Raises an error if the HTTP request returned an unsuccessful status code
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setEthPrice({
+          BTC: data.BTC,
+          USD: data.USD,
+          EUR: data.EUR,
+        });
+      } catch (e) {
+        setError(`An error occurred: ${e.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getEthPrice();
+  }, []);
+
+  // console.log(transactions);
   return (
     <>
+      {/* <Button onClick={getEtherBalance}>test</Button> */}
       <style>
         {`
     .carousel-item-padding-30-px {
@@ -491,7 +448,7 @@ export default function WalletInfo({ deviceType, walletAddress }) {
         columns={{ xs: 4, sm: 8, md: 12 }}
         sx={{ flexGrow: 1 }}
       >
-        {CardData.cards.map((card, index) => (
+        {cardDataActive.map((card, index) => (
           <Grid xs={12} sm={12} md={12} lg={6} key={index}>
             <Item>
               <Grid
@@ -548,8 +505,13 @@ export default function WalletInfo({ deviceType, walletAddress }) {
                       swipeable
                     >
                       {card.steps.map((step, index) => (
-                        <NftCard key={index} nftLink={step.nftLink} nftLevel = {step.percent} currentPercent={card.percentageLevel} />
-        ))}
+                        <NftCard
+                          key={index}
+                          nftLink={step.nftLink}
+                          nftLevel={step.percent}
+                          currentPercent={card.percentageLevel}
+                        />
+                      ))}
                     </Carousel>
                   </div>
                 </Grid>

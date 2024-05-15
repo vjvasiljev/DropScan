@@ -45,6 +45,7 @@ import ButtonGroup from "@mui/joy/ButtonGroup";
 import IconButton from "@mui/joy/IconButton";
 import Settings from "@mui/icons-material/Settings";
 import Footer from "./components/Footer";
+import ConnectedAddress from "./components/ConnectedAddress";
 
 const Item = styled(Sheet)(({ theme }) => ({
   backgroundColor:
@@ -167,16 +168,20 @@ function SignTransactionButton() {
   );
 }
 
-function ConnectedAddress({ onAddressChange }) {
-  const { address, isConnecting, isDisconnected } = useAccount();
+// function ConnectedAddress({ onAddressChange }) {
+//   const { address, isConnecting, isDisconnected } = useAccount();
 
-  React.useEffect(() => {
-    onAddressChange(address); // This will call the parent function whenever the address changes
-  }, [address, onAddressChange]);
-}
+//   useEffect(() => {
+//     if (address) {
+//       onAddressChange(address); // This will call the parent function whenever the address changes
+//     }
+//   }, [address, onAddressChange]);
+
+//   return null;
+// }
 
 export default function App() {
-  const [walletAddress, setWalletAddress] = useState("0x0...");
+  const [walletAddress, setWalletAddress] = useState();
   // const [drawerOpen, setDrawerOpen] = React.useState(false);
   // const [open, setOpen] = React.useState(false);
   // const { walletInfo } = useWalletInfo();
