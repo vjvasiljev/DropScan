@@ -105,6 +105,8 @@ const dottedConnectorData = [
   },
 ];
 
+//LOAD tTHE COMPARE DATA FROM THE LOCAL DATABASE (TEMP SOLUTION IS TO ACCESS API AND SAVE TO FILE)
+
 // 0. Setup queryClient
 const queryClient = new QueryClient();
 

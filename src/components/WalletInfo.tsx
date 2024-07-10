@@ -35,7 +35,7 @@ const getTransactionsByAddress = async (
   startBlock = 0,
   endBlock = 99999999,
   page = 1,
-  offset = 9999,
+  offset = 1000,
   sort = "asc"
 ) => {
   if (!walletAddress) {
@@ -58,7 +58,7 @@ const getTransactionsByAddress = async (
       console.error("Error fetching transactions:", data.message);
       return [];
     }
-
+    console.log(data);
     // Handle the transactions data
     // console.log("Get transaction list");
     // You can set the transactions data to a state or return it depending on your app's design
@@ -221,6 +221,52 @@ const getEtherBalance = async (walletAddress, setBalance) => {
   }
 };
 
+const getCompareDataFromDune = async (walletAddress) => {
+  async function fetchDuneQueryResults(apiKey, queryId, queryParams) {
+    const url = `https://api.dune.com/api/v1/query/${queryId}/results?${queryParams}`;
+
+    const options = {
+      method: "GET",
+      headers: {
+        "X-Dune-API-Key": apiKey,
+      },
+    };
+
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error; // Re-throw the error after logging it
+    }
+  }
+
+  // Example usage:
+  const apiKey = import.meta.env.VITE_DUNE_API;
+  const queryId = "3771289"; // The query ID
+  const queryParams = new URLSearchParams({
+    limit: 15000, // We only need one row
+    // filters: `user_address = 0x4F5197CD2BAdF78Cd5C63d7a1E0D8E7F0eD7e906`,
+    // columns: "id,account", // Only fetch the id and account columns
+  });
+
+  fetchDuneQueryResults(apiKey, queryId, queryParams)
+    .then((data) => {
+      console.log(data); // Handle the data from the API
+    })
+    .catch((error) => {
+      console.error("Failed to fetch data:", error);
+    });
+};
+
+const getCompareBalanceFromDune = async (walletAddress) => {
+  return;
+};
+
 const responsive = {
   mobile: {
     breakpoint: {
@@ -330,7 +376,7 @@ export default function WalletInfo({ deviceType, walletAddress }) {
   // Saving json to state
   const [cardDataActive, setCardDataActive] = useState(cardData);
 
-  //Updating card data with fetched data
+  //Updating card data with fetched data from Scroll API
   const updateCardData = () => {
     // console.log("Updated card data");
     // Define the values for valueMain and valueSecondary for each card index
@@ -387,6 +433,8 @@ export default function WalletInfo({ deviceType, walletAddress }) {
         setTotalTransactionValue,
         setTotalGasSpent
       );
+      getCompareDataFromDune(walletAddress);
+      getCompareBalanceFromDune(walletAddress);
     }
     // console.log(walletAddress);
   }, [walletAddress]);
