@@ -68,8 +68,10 @@ const stepsDefault = [
 ];
 export default function DottedConnector({
   steps = stepsDefault,
-  currentPercentageLevel = 0,
+  currentPercentageLevel = 100,
 }) {
+  //This is required so that it shows not completed point while loading info
+  currentPercentageLevel == -1 ? currentPercentageLevel = 100 : currentPercentageLevel == -1;
   const firstNotCompletedIndex = steps.findIndex(
     (step) => currentPercentageLevel > step.percent
   );

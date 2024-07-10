@@ -11,6 +11,8 @@ import cardData from "/src/data/cardData.json";
 import "react-multi-carousel/lib/styles.css";
 import Button from "@mui/joy/Button";
 import Web3 from "web3";
+//helpers
+import { getCompareDataFromDune } from "../utils/duneFetch";
 
 const ETH_DECIMAL_PLACES = 6;
 
@@ -221,52 +223,6 @@ const getEtherBalance = async (walletAddress, setBalance) => {
   }
 };
 
-const getCompareDataFromDune = async (walletAddress) => {
-  async function fetchDuneQueryResults(apiKey, queryId, queryParams) {
-    const url = `https://api.dune.com/api/v1/query/${queryId}/results?${queryParams}`;
-
-    const options = {
-      method: "GET",
-      headers: {
-        "X-Dune-API-Key": apiKey,
-      },
-    };
-
-    try {
-      const response = await fetch(url, options);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      throw error; // Re-throw the error after logging it
-    }
-  }
-
-  // Example usage:
-  const apiKey = import.meta.env.VITE_DUNE_API;
-  const queryId = "3771289"; // The query ID
-  const queryParams = new URLSearchParams({
-    limit: 15000, // We only need one row
-    // filters: `user_address = 0x4F5197CD2BAdF78Cd5C63d7a1E0D8E7F0eD7e906`,
-    // columns: "id,account", // Only fetch the id and account columns
-  });
-
-  fetchDuneQueryResults(apiKey, queryId, queryParams)
-    .then((data) => {
-      console.log(data); // Handle the data from the API
-    })
-    .catch((error) => {
-      console.error("Failed to fetch data:", error);
-    });
-};
-
-const getCompareBalanceFromDune = async (walletAddress) => {
-  return;
-};
-
 const responsive = {
   mobile: {
     breakpoint: {
@@ -372,6 +328,8 @@ export default function WalletInfo({ deviceType, walletAddress }) {
   const [totalUniqueContracts, setTotalUniqueContracts] = useState(0);
   const [totalTransactionValue, setTotalTransactionValue] = useState(0);
   const [totalGasSpent, setTotalGasSpent] = useState();
+  const [transactionPercentile, setTransactionPercentile] = useState(100);
+  const [transactionsToNextLvl, setTransactionsToNextLvl] = useState(0);
 
   // Saving json to state
   const [cardDataActive, setCardDataActive] = useState(cardData);
@@ -390,7 +348,11 @@ export default function WalletInfo({ deviceType, walletAddress }) {
         valueSecondary:
           "$" + (totalTransactionValue * ethPrice.USD).toFixed(2) + " USD",
       },
-      2: { valueMain: numSuccesfulTransactions },
+      2: {
+        valueMain: numSuccesfulTransactions,
+        percentageLevel: transactionPercentile,
+        nextStepData: transactionsToNextLvl,
+      },
       3: { valueMain: totalUniqueContracts },
       4: { valueMain: totalUniqueDays },
       5: { valueMain: totalUniqueWeeks },
@@ -433,8 +395,11 @@ export default function WalletInfo({ deviceType, walletAddress }) {
         setTotalTransactionValue,
         setTotalGasSpent
       );
-      getCompareDataFromDune(walletAddress);
-      getCompareBalanceFromDune(walletAddress);
+      getCompareDataFromDune(
+        walletAddress,
+        setTransactionPercentile,
+        setTransactionsToNextLvl
+      );
     }
     // console.log(walletAddress);
   }, [walletAddress]);
@@ -442,7 +407,12 @@ export default function WalletInfo({ deviceType, walletAddress }) {
   //Updating the dynamic data in the cards
   useEffect(() => {
     updateCardData();
-  }, [walletAddress, transactions]);
+  }, [
+    walletAddress,
+    transactions,
+    transactionPercentile,
+    transactionsToNextLvl,
+  ]);
 
   useEffect(() => {
     const getEthPrice = async () => {

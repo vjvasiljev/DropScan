@@ -66,9 +66,9 @@
     "infoTooltipTitle": "Total transactions successfully completed",
     "valueMain": "0",
     "valueSecondary": "",
-    "percentageLevel": 0.7,
-    "nextStepText": "Add this amount to your wallet",
-    "nextStepData": "Ξ 0.06548 ETH",
+    "percentageLevel": 0,
+    "nextStepText": "Transactions to do",
+    "nextStepData": 0,
     "steps": [
       {
         "percent": 75,
