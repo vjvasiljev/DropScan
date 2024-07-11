@@ -1,8 +1,21 @@
+/**
+ * Fetches compare data from Dune API for a given wallet address.
+ * @param {string} walletAddress - The wallet address to fetch data for.
+ * @param {function} setTransactionPercentile - A function to set the transaction percentile state.
+ * @param {function} setTransactionsToNextLvl - A function to set the transactions to next level state.
+ */
 export const getCompareDataFromDune = async (
   walletAddress,
   setTransactionPercentile,
   setTransactionsToNextLvl
 ) => {
+  /**
+   * Fetches data from Dune API using the provided API key, query ID, and query parameters.
+   * @param {string} apiKey - The API key to use for authentication.
+   * @param {string} queryId - The ID of the query to fetch data for.
+   * @param {URLSearchParams} queryParams - The query parameters to include in the request.
+   * @returns {Promise} A promise that resolves to the fetched data.
+   */
   async function fetchDuneQueryResults(apiKey, queryId, queryParams) {
     const url = `https://api.dune.com/api/v1/query/${queryId}/results?${queryParams}`;
 
@@ -38,8 +51,12 @@ export const getCompareDataFromDune = async (
   };
 
   //fetch transaction count percentile
+  /**
+   * Fetches transaction count percentile and required transactions to next level from Dune API and sets state.
+   */
   async function fetchAndProcessData() {
     try {
+      // Fetch transaction count percentile
       let queryParams = new URLSearchParams({
         limit: "1", // We only need one row
         filters: `user_address = ${walletAddress.toLowerCase()}`,
@@ -66,11 +83,29 @@ export const getCompareDataFromDune = async (
       console.log("transactionPercentile", transactionPercentile);
       setTransactionPercentile(transactionPercentile);
 
+      // Fetch required transactions to next level
+      const topSteps = [0.75, 0.5, 0.25, 0.1, 0.05];
+      let selectedStep = 0;
+      console.log("transactionPercentile", transactionPercentile);
+      if (transactionPercentile > 75 && transactionPercentile <= 100) {
+        selectedStep = 0.75;
+      } else if (transactionPercentile > 50 && transactionPercentile <= 75) {
+        selectedStep = 0.5;
+      } else if (transactionPercentile > 25 && transactionPercentile <= 50) {
+        selectedStep = 0.25;
+      } else if (transactionPercentile > 10 && transactionPercentile <= 25) {
+        selectedStep = 0.1;
+      } else if (transactionPercentile > 5 && transactionPercentile <= 10) {
+        selectedStep = 0.05;
+      }
+      console.log("selectedStep", selectedStep);
+
       queryParams = new URLSearchParams({
         limit: "1", // We only need one row
-        filters: `transaction_count_percentile > ${0.75}`, //TOIMPLEMENT
+        filters: `transaction_count_percentile > ${1 - selectedStep}`, //TODO
         sort_by: "transaction_count_percentile asc",
       });
+
       data = await fetchDuneQueryResults(
         apiKey,
         queryId.ScrollTxs,
@@ -78,12 +113,17 @@ export const getCompareDataFromDune = async (
       );
       console.log("Dune data: ", data.result.rows[0]); // Handle the data from the API
 
-      const rawTransactionCountCompareWallet =
-        data.result.rows[0].transaction_count;
-      const transactionDiffrence =
-        rawTransactionCountCompareWallet - rawTransactionCountTargetWallet;
-      setTransactionsToNextLvl(transactionDiffrence);
-      console.log("Required txs", transactionDiffrence);
+      //check if it is nor more than top 5% and only then calculated required steps, else jsut set it to DONE
+      if (!data.result.rows[0]) {
+        setTransactionsToNextLvl("DONE");
+      } else {
+        const rawTransactionCountCompareWallet =
+          data.result.rows[0].transaction_count;
+        const transactionDiffrence =
+          rawTransactionCountCompareWallet - rawTransactionCountTargetWallet;
+        setTransactionsToNextLvl(transactionDiffrence);
+        console.log("Required txs", transactionDiffrence);
+      }
     } catch (error) {
       console.error("Failed to fetch data:", error);
     }
