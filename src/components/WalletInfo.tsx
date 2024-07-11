@@ -308,6 +308,7 @@ const Item = styled(Sheet)(({ theme }) => ({
 export default function WalletInfo({ deviceType, walletAddress }) {
   const [account, setAccount] = useState(null);
   const [network, setNetwork] = useState();
+
   const [balance, setBalance] = useState(0);
   const [transactionCount, setTransactionCount] = useState();
 
@@ -328,8 +329,14 @@ export default function WalletInfo({ deviceType, walletAddress }) {
   const [totalUniqueContracts, setTotalUniqueContracts] = useState(0);
   const [totalTransactionValue, setTotalTransactionValue] = useState(0);
   const [totalGasSpent, setTotalGasSpent] = useState();
+
+  //Dune txs table
   const [transactionPercentile, setTransactionPercentile] = useState(100);
   const [transactionsToNextLvl, setTransactionsToNextLvl] = useState(0);
+
+  //Dune balance table
+  const [balancePercentile, setBalancePercentile] = useState(0);
+  const [balanceToNextLvl, setBalanceToNextLvl] = useState(0);
 
   // Saving json to state
   const [cardDataActive, setCardDataActive] = useState(cardData);
@@ -342,6 +349,8 @@ export default function WalletInfo({ deviceType, walletAddress }) {
       0: {
         valueMain: "Ξ" + balance + " ETH",
         valueSecondary: "$" + (balance * ethPrice.USD).toFixed(2) + " USD",
+        percentageLevel: balancePercentile,
+        nextStepData: balanceToNextLvl,
       },
       1: {
         valueMain: "Ξ" + totalTransactionValue + " ETH",
@@ -398,7 +407,12 @@ export default function WalletInfo({ deviceType, walletAddress }) {
       getCompareDataFromDune(
         walletAddress,
         setTransactionPercentile,
-        setTransactionsToNextLvl
+        setTransactionsToNextLvl,
+        //txs length was required for checking how many txs the address has if there is no Dune data
+        transactions.length,
+        setBalancePercentile,
+        setBalanceToNextLvl,
+        balance
       );
     }
     // console.log(walletAddress);
@@ -412,6 +426,8 @@ export default function WalletInfo({ deviceType, walletAddress }) {
     transactions,
     transactionPercentile,
     transactionsToNextLvl,
+    setBalancePercentile,
+    setBalanceToNextLvl,
   ]);
 
   useEffect(() => {

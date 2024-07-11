@@ -183,7 +183,9 @@ function SignTransactionButton() {
 // }
 
 export default function App() {
-  const [walletAddress, setWalletAddress] = useState();
+  const [walletAddress, setWalletAddress] = useState(
+    "0xE9f005E1a4b089069236edA44d5cC90CD0cBa3c9"
+  );
   // const [drawerOpen, setDrawerOpen] = React.useState(false);
   // const [open, setOpen] = React.useState(false);
   // const { walletInfo } = useWalletInfo();
@@ -289,7 +291,7 @@ export default function App() {
                   }
                   valueMain={
                     walletAddress ? (
-                      "You are in the top 44% of all Scroll addresses"
+                      "You are in the top 44% of all Scroll addresses. Test"
                     ) : (
                       <Typography> </Typography>
                     )
