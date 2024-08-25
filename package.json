@@ -2,10 +2,14 @@
   "name": "material-ui-vite",
   "version": "5.0.0",
   "private": true,
+  "homepage": "https://vjvasiljev.github.io/DropScan/",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@duneanalytics/client-sdk": "^0.1.5",
@@ -30,6 +34,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "latest",
+    "gh-pages": "^6.1.1",
     "vite": "latest",
     "vite-plugin-svgr": "^4.2.0"
   }

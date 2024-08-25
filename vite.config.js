@@ -7,4 +7,5 @@ export default defineConfig({
     react(), // Ensures React support
     svgr(), // Enables SVG transformation
   ],
+  base: "/DropScan/",
 });

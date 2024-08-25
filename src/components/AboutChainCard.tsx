@@ -35,7 +35,7 @@ export default function AboutChainInfo() {
         </AspectRatio>
         <CardContent sx={{ textAlign: "left" }}>
           <Typography level="h1" fontWeight="lg">
-          Scroll Airdrop Eligibility Tool
+            Scroll Wallet Tool
           </Typography>
           {/* Dissapears on 600 */}
           <Typography
