@@ -202,7 +202,7 @@ const getEtherBalance = async (walletAddress, setBalance) => {
     }
 
     const data = await response.json();
-    console.log("API Response Data:", data); // Log the entire response for debugging
+    console.log("Scroll API get Response Data:", data); // Log the entire response for debugging
 
     // Check if the data contains an error message, in which case you should not proceed
     if (!data.result || data.result.startsWith("Error!")) {
@@ -310,6 +310,7 @@ export default function WalletInfo({ deviceType, walletAddress }) {
   const [network, setNetwork] = useState();
 
   const [balance, setBalance] = useState(0);
+
   const [transactionCount, setTransactionCount] = useState();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -412,11 +413,12 @@ export default function WalletInfo({ deviceType, walletAddress }) {
         transactions.length,
         setBalancePercentile,
         setBalanceToNextLvl,
-        balance
+        balance,
+        ethPrice.USD
       );
     }
     // console.log(walletAddress);
-  }, [walletAddress]);
+  }, [walletAddress, balance]);
 
   //Updating the dynamic data in the cards
   useEffect(() => {

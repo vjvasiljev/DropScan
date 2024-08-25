@@ -5,7 +5,7 @@
  * @param {function} setTransactionsToNextLvl - A function to set the transactions to next level state.
  * @returns {number} The percentile of the given wallet address.
  */
-
+const ETH_DECIMAL_PLACES = 6;
 // return percentage for the card
 function returnPercentages(data, percentileColumnString, mainApiAddressData) {
   let rawPercentile = 100;
@@ -81,7 +81,8 @@ export const getCompareDataFromDune = async (
   //balance data
   setBalancePercentile,
   setBalanceToNextLvl,
-  balance
+  balance,
+  ethPriceUSD
 ) => {
   /**
    * Fetches data from Dune API using the provided API key, query ID, and query parameters.
@@ -120,8 +121,8 @@ export const getCompareDataFromDune = async (
 
   const queryId = {
     ScrollTxs: "3733797", // Scroll txs
-    ScrollBalance: "3039059", // Current Balance
-    queryID3: "value3",
+    ScrollTotalBalance: "3039059", // Current Total Balance
+    ScrollEthBalance: "3767471", // Current ETH Balance
   };
 
   //fetch transaction count percentile
@@ -130,7 +131,7 @@ export const getCompareDataFromDune = async (
    */
   async function fetchScrollTransactions() {
     try {
-      // Fetch transaction count percentile
+      // Stap 1: Fetch transaction count percentile
       let queryParams = new URLSearchParams({
         limit: "1", // We only need one row
         filters: `user_address = ${walletAddress.toLowerCase()}`,
@@ -148,15 +149,10 @@ export const getCompareDataFromDune = async (
         percentileColumnString,
         transactions
       );
-      // console.log("transactionPercentile", transactionPercentile);
       setTransactionPercentile(transactionPercentile);
 
-      // Fetch required transactions to next level
-
+      // Step 2: Fetch required transactions to next level
       const selectedTransactionStep = selectNextSteps(transactionPercentile);
-
-      // console.log("selectedStep", selectedStep);
-
       //new query to get results for nexts step info
       queryParams = new URLSearchParams({
         limit: "1",
@@ -188,25 +184,67 @@ export const getCompareDataFromDune = async (
   }
   async function fetchScrollBalance() {
     try {
+      // Step 1: Fetch balance percentile
       let queryParams = new URLSearchParams({
         limit: "1", // We only need one row
         filters: `address = ${walletAddress.toLowerCase()}`,
       });
       let data = await fetchDuneQueryResults(
         apiKey,
-        queryId.ScrollBalance,
+        queryId.ScrollEthBalance,
         queryParams
       );
-      console.log("Dune Scroll Balance: ", data.result); // Handle the data from the API
-      let rawBalancePercentile = 100;
-      let rawBalanceTargetWallet = balance;
-      let balancePercentile = 100;
-      if (data.result.rows[0]) {
-        rawBalancePercentile = data.result.rows[0].balance_percentile;
-        // rawBalanceTargetWallet = data.result.rows[0].balance;
-        balancePercentile = 100 - rawBalancePercentile * 100 + 1;
+      // Handle the data from the API
+      console.log("Dune Scroll Balance: ", data.result);
+
+      const percentileColumnString = "balance_percentile";
+
+      const balancePercentile = returnPercentages(
+        data,
+        percentileColumnString,
+        balance
+      );
+
+      setBalancePercentile(balancePercentile);
+
+      // Step 2: Fetch required balance to next level
+
+      const selectedBalanceStep = selectNextSteps(balancePercentile);
+      //new query to get results for nexts step info
+      queryParams = new URLSearchParams({
+        limit: "1",
+        filters: `balance_percentile > ${1 - selectedBalanceStep}`,
+        sort_by: "balance_percentile asc",
+      });
+      data = await fetchDuneQueryResults(
+        apiKey,
+        queryId.ScrollEthBalance,
+        queryParams
+      );
+      console.log("data", data);
+      if (!data.result.rows[0]) {
+        setBalanceToNextLvl("DONE");
+      } else {
+        if (balance != 0) {
+          const rawBalance = data.result.rows[0].balance;
+          console.log("balance", balance);
+          let balanceDiffrence = rawBalance - balance * ethPriceUSD;
+          balanceDiffrence =
+            Number(balanceDiffrence).toFixed(ETH_DECIMAL_PLACES);
+          setBalanceToNextLvl(balanceDiffrence);
+          console.log("Required balance", balanceDiffrence);
+        }
       }
-      setBalancePercentile(data.result.rows[0].balance_percentile);
+
+      // let rawBalancePercentile = 100;
+      // let rawBalanceTargetWallet = balance;
+      // let balancePercentile = 100;
+      // if (data.result.rows[0]) {
+      //   rawBalancePercentile = data.result.rows[0].balance_percentile;
+      //   // rawBalanceTargetWallet = data.result.rows[0].balance;
+      //   balancePercentile = 100 - rawBalancePercentile * 100 + 1;
+      // }
+      // setBalancePercentile(data.result.rows[0].balance_percentile);
     } catch (error) {
       console.error("Failed to fetch data:", error);
     }

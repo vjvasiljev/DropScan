@@ -1,12 +1,12 @@
 [
   {
-    "title": "Current Balance",
-    "infoTooltipTitle": "Total balance including Ethereum and stablecoins",
+    "title": "Current ETH Balance",
+    "infoTooltipTitle": "Total balance of Ethereum in your wallet",
     "valueMain": "Ξ0 ETH",
     "valueSecondary": "$0",
-    "percentageLevel": 10,
+    "percentageLevel": 0,
     "nextStepText": "Add this amount to your wallet",
-    "nextStepData": "Ξ0.06548 ETH",
+    "nextStepData": "Ξ0 ETH",
     "steps": [
       {
         "percent": 75,
